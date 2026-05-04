@@ -1,0 +1,2 @@
+# 2026_1_CALCULO-APLICADO_1ER-PROYECTO
+Primer proyecto del curso de Cálculo Aplicado (2026_1) sobre Comparación de Métodos de Integración Numérica.
