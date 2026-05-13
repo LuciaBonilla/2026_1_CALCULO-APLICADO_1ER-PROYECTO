@@ -1,8 +1,11 @@
 """
-PARTE 1. Convergencia de sumas inferior y superior.
+SECCIÓN 1. Convergencia de Sumas Inferior y Superior
+
+Como primer ejericio, se busca verificar que f(x) = 2*sqrt(1 - x^2) es
+integrable de Riemann.
 
 1. Implemente en python una función que tome la cantidad de puntos de la
-partición (equispaciada) en [-1,1] y calcule la suma inferior de la función.
+partición (equiespaciada) en [-1,1] y calcule la suma inferior de la función.
 Repita para la suma superior.
 
 2. Genere tablas comparativas de ambas sumas variando el tamaño de la partición.
@@ -10,6 +13,10 @@ En esta tabla debe incluir los resultados de la aproximación y el residuo (la
 diferencia entre la aproximación y el valor de π) para cada suma.
 Una tabla debe variar el tamaño de N de 10 a 100 variando de a 10, la segunda
 de 100 a 1000 variando de a 100 y la tercera de 1000 a 10000 variando de a 1000.
+
+3. Grafique los valores de las sumas con respecto al N utilizado. La gráfica
+debe incluir ambas curvas (suma superior y suma inferior) y el valor de π
+teórico.
 
 Convención:
 El parámetro N representa la cantidad de PUNTOS de la partición P.
@@ -33,13 +40,10 @@ def f(x):
 
 def lower_sum(N):
     """
-    Suma inferior de Riemann de f en [-1, 1] con partición equispaciada
+    Suma inferior de Riemann de f en [-1, 1] con partición equiespaciada
     de N puntos.
     """
-    if N < 2:
-        raise ValueError("Se requieren al menos 2 puntos de partición.")
-
-    # Genera N números reales igualmente espaciados entre [-1,1].
+    # Genera N números reales igualmente espaciados en [-1,1].
     x = np.linspace(-1.0, 1.0, N)
     
     # Base de los rectángulos de aproximación.
@@ -48,7 +52,7 @@ def lower_sum(N):
     # Evalúa la función f en todos los puntos de la partición y guarda los resultados.
     f_vals = f(x)
 
-    # Construye un arreglo donde la i-ésima entrada es el mínimo entre f(x_i) y f(x_i+1).
+    # Construye un arreglo donde la i-ésima entrada es el mínimo e [f(x_i), f(x_{i+1})].
     m = np.minimum(f_vals[:-1], f_vals[1:])
     
     # Hace la suma inferior.
@@ -57,12 +61,9 @@ def lower_sum(N):
 
 def upper_sum(N):
     """
-    Suma superior de Riemann de f en [-1, 1] con partición equispaciada
+    Suma superior de Riemann de f en [-1, 1] con partición equiespaciada
     de N puntos.
     """
-    if N < 2:
-        raise ValueError("Se requieren al menos 2 puntos de partición.")
-
     x = np.linspace(-1.0, 1.0, N)
     delta = x[1] - x[0]
     f_vals = f(x)
@@ -89,7 +90,8 @@ def generate_table(N_values, file_name):
         "suma_superior",
         "pi",
         "residuo_inferior",
-        "residuo_superior"]
+        "residuo_superior"
+    ]
  
     rows = []
     for N in N_values:

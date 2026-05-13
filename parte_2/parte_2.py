@@ -1,5 +1,5 @@
 """
-PARTE 2. Influencia de la partición.
+SECCIÓN 2. Influencia del Tipo de Partición
 
 1. Implemente en python funciones que tomen la cantidad de puntos de la
 partición de [-1, 1] y generen una de las 3 siguientes particiones:
@@ -14,11 +14,8 @@ diferencia entre la aproximación y el valor de π) para cada suma.
 Una tabla debe variar el tamaño de N de 10 a 100 variando de a 10, la segunda
 de 100 a 1000 variando de a 100 y la tercera de 1000 a 10000 variando de a 1000.
 
-
-Convención:
-El parámetro N representa la cantidad de PUNTOS de la partición.
-Para la partición de cosine se usa el denominador (N-1) de modo que los
-índices i=0 e i=N-1 generen exactamente x=-1 y x=1.
+3. Grafique los valores de las 3 sumas para las distintas particiones. La gráfica
+debe incluir las 3 curvas y el valor de π teórico.
 """
 
 import numpy as np
@@ -35,9 +32,9 @@ rng = np.random.default_rng(seed=42)
 
 
 def equispaced_partition(N):
-    """N puntos equiespaciados en [-1, 1]."""
-    if N < 2:
-        raise ValueError("Se requieren al menos 2 puntos.")
+    """
+    N puntos equiespaciados en [-1, 1].
+    """
     return np.linspace(-1.0, 1.0, N)
 
 
@@ -47,10 +44,6 @@ def random_partition(N):
     Los extremos -1 y 1 se fijan; los N-2 puntos interiores se sortean
     uniformemente y se ordenan.
     """
-    if N < 2:
-        raise ValueError("Se requieren al menos 2 puntos.")
-    if N == 2:
-        return np.array([-1.0, 1.0])
     interior = rng.uniform(-1.0, 1.0, size=N - 2)
     return np.concatenate(([-1.0], np.sort(interior), [1.0]))
 
@@ -61,8 +54,6 @@ def cosine_partition(N):
         x_i = cos((i*pi)/N) para i = 0, ..., N-1
     Se invierten para que queden en orden creciente (de -1 a 1).
     """
-    if N < 2:
-        raise ValueError("Se requieren al menos 2 puntos.")
     i = np.arange(N)
     return np.flip(np.cos((i * np.pi) / N))
 
@@ -72,9 +63,7 @@ def lower_sum(x):
     Suma inferior de Riemann de f sobre la partición x (no necesariamente
     equiespaciada).
     """
-    if len(x) < 2:
-        raise ValueError("La partición requiere al menos 2 puntos.")
-    widths = np.diff(x)                       # x_{i+1} - x_i, longitud N-1
+    widths = np.diff(x)                       # x_{i+1} - x_i
     f_vals = f(x)
     m = np.minimum(f_vals[:-1], f_vals[1:])
     return np.sum(widths * m)
@@ -83,23 +72,36 @@ def lower_sum(x):
 def generate_table(N_values, file_name):
     """
     Tabla con columnas:
-      N, equiespaciada, aleatoria, cosine,
-      residuo_equispaciada, residuo_aleatoria, residuo_coseno.
+    N,
+    sum_inf_equiespaciada,
+    sum_inf_aleatoria,
+    sum_inf_coseno,
+    pi,
+    residuo_equiespaciada,
+    residuo_aleatoria,
+    residuo_coseno.
     """
-    headers = ["N", "equiespaciada", "aleatoria", "coseno",
-               "residuo_equispaciada", "residuo_aleatoria", "residuo_coseno"]
+    headers = [
+        "N",
+        "sum_inf_equiespaciada",
+        "sum_inf_aleatoria",
+        "sum_inf_coseno",
+        "pi",
+        "residuo_equiespaciada",
+        "residuo_aleatoria",
+        "residuo_coseno"
+    ]
 
     rows = []
     for N in N_values:
         L_eq = lower_sum(equispaced_partition(N))
         L_rand = lower_sum(random_partition(N))
         L_cos = lower_sum(cosine_partition(N))
-
+        pi = np.pi
         remainder_eq = L_eq - np.pi
         remainder_rand = L_rand - np.pi
         remainder_cos = L_cos - np.pi
-
-        rows.append([N, L_eq, L_rand, L_cos, remainder_eq, remainder_rand, remainder_cos])
+        rows.append([N, L_eq, L_rand, L_cos, pi, remainder_eq, remainder_rand, remainder_cos])
 
     # Guardar CSV.
     with open(file_name, "w", newline="") as file:
@@ -111,15 +113,13 @@ def generate_table(N_values, file_name):
             my_writer.writerow([N] + formated_values)
 
     # Imprimir por consola.
-    print(f"{'N':>6} | {'sum_inf_equispaciada':>13} | {'sum_inf_aleatoria':>13} | {'sum_inf_coseno':>13} | {'resto_equispaciada':>13} | {'resto_aleatoria':>13} | {'resto_coseno':>13}")
-    print("-" * 110)
+    print(f"{'N':>6} | {'sum_inf_equiespaciada':>20} | {'sum_inf_aleatoria':>20} | {'sum_inf_coseno':>20} | {'pi':>20} | {'residuo_equiespaciada':>20} | {'residuo_aleatoria':>20} | {'residuo_coseno':>20}")
+    print("-" * 175)
     for row in rows:
-        N, L_eq, L_rand, L_cos, remainder_eq, remainder_rand, remainder_cos = row
-        print(f"{N:>6} | {L_eq:>13.8f} | {L_rand:>13.8f} | {L_cos:>13.8f} | "
-              f"{remainder_eq:>13.4e} | {remainder_rand:>13.4e} | {remainder_cos:>13.4e}")
+        N, L_eq, L_rand, L_cos, pi, remainder_eq, remainder_rand, remainder_cos = row
+        print(f"{N:>6} | {L_eq:>20.10f} | {L_rand:>20.10f} | {L_cos:>20.10f} | {pi:>20.10f} | {remainder_eq:>20.10f} | {remainder_rand:>20.10f} | {remainder_cos:>20.10f}")
 
 
-# Una única tabla combinando los tres rangos (sin duplicados en 100 y 1000).
 N_values = sorted(set(
     list(range(10, 101, 10)) +
     list(range(200, 1001, 100)) +

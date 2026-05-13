@@ -1,7 +1,21 @@
 # 2026_1_CALCULO-APLICADO_1ER-PROYECTO
+
 Primer proyecto del curso de Cálculo Aplicado (2026_1) sobre Comparación de Métodos de Integración Numérica.
 
-[x] Parte 1
-[] Parte 2 (en proceso)
-[] Parte 3
-[] Parte 4
+El código se divide en secciones:
+
+- [x] Parte 1 Convergencia de Sumas Inferior y Superior
+
+- [x] Parte 2 Influencia del Tipo de Partición
+
+- [x] Parte 3 Comparación de Métodos de Integración Numérica
+
+- [x] Parte 4 Integración Montecarlo
+
+En cada carpeta está:
+
+- el código python a ejecutar,
+
+- el .csv con los datos de las tablas obtenidos al ejecutar el código
+
+- y un archivo Excel con las gráficas a partir del .csv.
