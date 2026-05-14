@@ -10,12 +10,12 @@ El código se divide en secciones:
 
 - [x] Parte 3 Comparación de Métodos de Integración Numérica
 
-- [x] Parte 4 Integración Montecarlo
+- [x] Parte 4 Integración de Montecarlo
 
 En cada carpeta está:
 
 - el código python a ejecutar,
 
-- el .csv con los datos de las tablas obtenidos al ejecutar el código
+- el .csv con los datos de la tabla obtenidos al ejecutar el código
 
-- y un archivo Excel con las gráficas a partir del .csv.
+- y un archivo Excel con la gráfica a partir del .csv.

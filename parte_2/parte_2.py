@@ -109,7 +109,7 @@ def generate_table(N_values, file_name):
         my_writer.writerow(headers)
         for row in rows:
             N = row[0]
-            formated_values = [f"{v:.10f}".replace(".", ",") for v in row[1:]]
+            formated_values = [f"{v:.8f}".replace(".", ",") for v in row[1:]]
             my_writer.writerow([N] + formated_values)
 
     # Imprimir por consola.
@@ -117,7 +117,7 @@ def generate_table(N_values, file_name):
     print("-" * 175)
     for row in rows:
         N, L_eq, L_rand, L_cos, pi, remainder_eq, remainder_rand, remainder_cos = row
-        print(f"{N:>6} | {L_eq:>20.10f} | {L_rand:>20.10f} | {L_cos:>20.10f} | {pi:>20.10f} | {remainder_eq:>20.10f} | {remainder_rand:>20.10f} | {remainder_cos:>20.10f}")
+        print(f"{N:>6} | {L_eq:>20.8f} | {L_rand:>20.8f} | {L_cos:>20.8f} | {pi:>20.8f} | {remainder_eq:>20.8f} | {remainder_rand:>20.8f} | {remainder_cos:>20.8f}")
 
 
 N_values = sorted(set(

@@ -94,7 +94,7 @@ def generate_table(N_values, file_name):
         my_writer.writerow(headers)
         for row in rows:
             N = row[0]
-            formated_values = [f"{v:.10f}".replace(".", ",") for v in row[1:]]
+            formated_values = [f"{v:.8f}".replace(".", ",") for v in row[1:]]
             my_writer.writerow([N] + formated_values)
 
     # Imprimir por consola.
@@ -102,7 +102,7 @@ def generate_table(N_values, file_name):
     print("-" * 85)
     for row in rows:
         N, estimate, pi, remainder = row
-        print(f"{N:>6} | {estimate:>20.10f} | {pi:>20.10f} | {remainder:>20.10f}")
+        print(f"{N:>6} | {estimate:>20.8f} | {pi:>20.8f} | {remainder:>20.8f}")
 
 
 N_values = sorted(set(

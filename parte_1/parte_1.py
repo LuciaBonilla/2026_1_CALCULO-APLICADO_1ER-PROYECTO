@@ -110,7 +110,7 @@ def generate_table(N_values, file_name):
             N = row[0]
             # N como entero, los demás con suficientes decimales.
             # Cambia el . por , para poder graficar en Excel.
-            formated_values = [f"{v:.10f}".replace(".", ",") for v in row[1:]]
+            formated_values = [f"{v:.8f}".replace(".", ",") for v in row[1:]]
             my_writer.writerow([N] + formated_values)
  
     # Imprimir por consola.
@@ -118,7 +118,7 @@ def generate_table(N_values, file_name):
     print("-" * 125)
     for row in rows:
         N, L, U, pi, remainder_L, remainder_U = row
-        print(f"{N:>6} | {L:>20.10f} | {U:>20.10f} | {pi:>20.10f} | {remainder_L:>20.10f} | {remainder_U:>20.10f}")
+        print(f"{N:>6} | {L:>20.8f} | {U:>20.8f} | {pi:>20.8f} | {remainder_L:>20.8f} | {remainder_U:>20.8f}")
 
 
 # Una única tabla: combina los tres rangos (10, 100, 1000).
