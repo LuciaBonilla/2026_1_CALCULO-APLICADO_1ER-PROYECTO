@@ -16,6 +16,9 @@ de 100 a 1000 variando de a 100 y la tercera de 1000 a 10000 variando de a 1000.
 
 3. Grafique los valores de las 3 sumas para las distintas particiones. La gráfica
 debe incluir las 3 curvas y el valor de π teórico.
+
+4. Grafique la función f y los rectángulos de la aproximación para cada partición,
+con N = 100.
 """
 
 import numpy as np
@@ -126,4 +129,50 @@ N_values = sorted(set(
     list(range(2000, 10001, 1000))
 ))
 
+
+# ── Gráfico: función f y rectángulos de suma inferior para cada partición (N = 100) ──
+
+import matplotlib.pyplot as plt
+
+def graph_approximation_rectangles():
+    N_plot = 100
+    x_curve = np.linspace(-1.0, 1.0, 1000)
+
+    partitions = [
+        equispaced_partition(N_plot),
+        random_partition(N_plot),
+        cosine_partition(N_plot)
+    ]
+    titles = ["Equiespaciada", "Aleatoria uniforme", "Coseno"]
+    colors = ["steelblue", "darkorange", "seagreen"]
+
+    fig, axes = plt.subplots(1, 3, figsize=(15, 5), sharey=True)
+
+    for ax, x, title, color in zip(axes, partitions, titles, colors):
+        # Anchos y alturas de los rectángulos de la suma inferior.
+        widths = np.diff(x)
+        f_vals = f(x)
+        heights = np.minimum(f_vals[:-1], f_vals[1:])
+
+        ax.bar(
+            x[:-1], heights, width=widths, align="edge",
+            color=color, alpha=0.4, edgecolor=color, linewidth=0.3,
+            label="Suma inferior"
+        )
+        ax.plot(x_curve, f(x_curve), color="black", linewidth=1.5, label="f(x)", zorder=3)
+        ax.set_title(title)
+        ax.set_xlabel("x")
+        ax.set_xlim(-1.05, 1.05)
+        ax.set_ylim(-0.1, 2.3)
+        ax.legend(loc="upper center")
+
+    axes[0].set_ylabel("f(x)")
+    plt.suptitle(f"Suma inferior por tipo de partición — N = {N_plot} puntos", fontsize=13)
+    plt.tight_layout()
+    plt.savefig("parte_2/grafico_particiones_N100.png", dpi=150)
+    plt.show()
+
+
+
 generate_table(N_values, "parte_2/tabla_influencia_particion.csv")
+graph_approximation_rectangles()
